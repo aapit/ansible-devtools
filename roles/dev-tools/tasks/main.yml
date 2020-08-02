@@ -36,12 +36,6 @@
 - name: Install Python3 apt support
   apt: name=python3-apt
 
-- name: Install Todoist API
-  pip:
-    name: todoist-python
-    extra_args: --user
-  become: no
-
 - name: Install latest npm, for compatibility with nodejs v10
   npm:
     name: npm
