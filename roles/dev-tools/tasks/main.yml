@@ -6,7 +6,7 @@
   apt: name=neovim
 
 - name: Install PHP 7 CLI
-  apt: name=php7.2-cli
+  apt: name=php-cli
 
 - name: Install Vim plugins
   command: vim -c ':PlugInstall | quit | quit'
