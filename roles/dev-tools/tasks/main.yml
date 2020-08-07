@@ -1,22 +1,11 @@
 ---
+# Git
 - name: Install Git client
   apt: name=git
 
-- name: Install NeoVim
-  apt: name=neovim
-
+# Coding langs
 - name: Install PHP 7 CLI
   apt: name=php-cli
-
-- name: Install Vim plugins
-  command: vim -c ':PlugInstall | quit | quit'
-  become: no
-
-- name: Install CMake, for Vim plugin compilation
-  apt: name=cmake
-
-- name: Install build-essential, for YouCompleteMe deps and others
-  apt: name=build-essential
 
 - name: Install Python dev, for YouCompleteMe deps and others
   apt: name=python-dev
@@ -30,11 +19,16 @@
     extra_args: --user
   become: no
 
+# Compilers
+- name: Install CMake, for Vim plugin compilation
+  apt: name=cmake
+
+- name: Install build-essential, for YouCompleteMe deps and others
+  apt: name=build-essential
+
+# Package managers
 - name: Install PHP Composer
   apt: name=composer
-
-- name: Install Python3 apt support
-  apt: name=python3-apt
 
 - name: Install latest npm, for compatibility with nodejs v10
   npm:
@@ -48,8 +42,8 @@
     global: yes
     state: latest
 
-- name: Install Gulp
-  apt: name=gulp
+- name: Install Python3 apt support
+  apt: name=python3-apt
 
 - name: Install Homebrew installer script
   get_url:
@@ -60,4 +54,50 @@
 
 - name: Run Homebrew installer
   command: /tmp/install.sh
+  become: no
+
+# Runners
+- name: Install Gulp
+  apt: name=gulp
+
+# Editors
+- name: Install NeoVim
+  apt: name=neovim
+
+- name: Install Vim plugins
+  command: vim -c ':PlugInstall | quit | quit'
+  become: no
+
+# Emacs
+- name: Install Emacs 27
+  snap:
+    name: emacs
+    classic: yes
+    channel: beta
+
+# Doom dependencies
+- name: Install fd-find
+  apt: name=fd-find
+- name: Install Git
+  apt: name=git
+- name: Install ripgrep
+  apt: name=ripgrep
+
+- name: Check if Doom was already installed
+  stat:
+    path: ~/.emacs.d/bin/doom
+  register: doom_bin_file
+  become: no
+
+- name: Clone Doom repo, if Doom is not installed
+  git:
+    repo: 'https://github.com/hlissner/doom-emacs'
+    dest: ~/.emacs.d
+    depth: 0
+  when: not doom_bin_file.stat.exists
+  become: no
+
+- name: Run the Doom installer, if Doom is not installed
+  command: ~/.emacs.d/bin/doom
+  when: not doom_bin_file.stat.exists
   become: no
