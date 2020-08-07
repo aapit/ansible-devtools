@@ -51,5 +51,13 @@
 - name: Install Gulp
   apt: name=gulp
 
-- name: Install homebrew wrapper, to watch monitors and execute sync / build scripts
-  apt: name=linuxbrew-wrapper
+- name: Install Homebrew installer script
+  get_url:
+    url: https://raw.githubusercontent.com/Homebrew/install/master/install.sh
+    dest: /tmp/
+    mode: '0700'
+  become: no
+
+- name: Run Homebrew installer
+  command: /tmp/install.sh
+  become: no
