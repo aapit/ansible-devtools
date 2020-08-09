@@ -82,6 +82,18 @@
   apt: name=git
 - name: Install ripgrep
   apt: name=ripgrep
+- name: Install dvipng
+  apt: name=dvipng
+- name: Install LaTeX 1/4
+  apt: name=texlive-fonts-recommended
+- name: Install LaTeX 2/4
+  apt: name=texlive-latex-base
+- name: Install LaTeX 3/4
+  apt: name=texlive-latex-extra
+- name: Install LaTeX 4/4
+  apt: name=texlive-latex-recommended
+- name: Install Sqlite 3
+  apt: name=sqlite3
 
 - name: Check if Doom was already installed
   stat:
